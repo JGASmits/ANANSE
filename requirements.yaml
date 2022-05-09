@@ -1,4 +1,4 @@
-name: ananse_dev
+name: ananse_single_cell
 channels:
   - bioconda
   - conda-forge
