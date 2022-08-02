@@ -299,6 +299,14 @@ if __name__ == "__main__":
         default=None,
     )
     group.add_argument(
+        "-u",
+        "--costum-interactions",
+        dest="costum_interactions",
+        help="costum interactions file used to calculate influence",
+        metavar="FILE",
+        default=None,
+    )
+    group.add_argument(
         "-i",
         "--edges",
         dest="edges",

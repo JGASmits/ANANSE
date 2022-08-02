@@ -323,6 +323,7 @@ class Influence(object):
         GRNsort_column="prob",
         padj_cutoff=0.05,
         full_output=False,
+        costum_interactions = None,
     ):
         self.ncore = ncore
         self.full_output = full_output
@@ -338,6 +339,28 @@ class Influence(object):
         elif GRN_target_file is None and GRN_source_file is None:
             logger.warning("You should provide at least one ANANSE network file!")
         else:
+         if costum_interactions is not None:
+                logger.info(
+                f"Reading network(s), using costum suplied edge set.")
+                #read setfile
+                top_int = set(pd.read_table(costum_interactions, header = None, names = ['interactions'], index_col=False)['interactions'])
+            else:
+                logger.info(
+                    f"Reading network(s), using the union of the top {edges} edges of each GRN."
+                )
+                top_int_source = read_top_interactions(
+                    GRN_source_file, edges=edges, GRNsort_column=GRNsort_column
+                )
+                top_int_target = read_top_interactions(
+                    GRN_target_file, edges=edges, GRNsort_column=GRNsort_column
+                )
+                top_int = set.union(top_int_source, top_int_target)
+            G1_source = read_network(
+                GRN_source_file,
+                interactions=top_int,
+                GRNsort_column=GRNsort_column,
+                full_output=full_output,
+            )
             logger.info(
                 f"Reading network(s), using the union of the top {edges} edges of each GRN."
             )
